@@ -9,22 +9,24 @@ using namespace std;
 
 int Nuage::ordreTexture = 0;
 
-void Nuage::ajouterPoint(Point* p) {
+void Nuage::ajouterPoint(int id) {
+    auto it = std::find_if(pointsApplication.begin(), pointsApplication.end(),
+                              [id](Point* p) { return p->obtenirId() == id; });
     switch(texture) {
         case '#':
-            p = new TextureDiese(p);
+            *it = new TextureDiese(*it);
             break;
         case '$':
-            p = new TextureDollar(p);
+            *it = new TextureDollar(*it);
             break;
         case 'o':
-            p = new TextureO(p);
+            *it = new TextureO(*it);
             break;
     }
-    pointsDansNuage.push_back(p);
+    pointsDansNuage.push_back((*it)->obtenirId());
 }
 
-std::vector<Point*> Nuage::obtenirPoints() const {
+std::vector<int> Nuage::obtenirIdPoints() const {
     return pointsDansNuage;
 }
 
@@ -39,33 +41,56 @@ void Nuage::supprimerPoint(int id) {
     );
 }
 
-Nuage::Nuage(std::vector<Point*>& points) {
+Nuage::Nuage(std::vector<Point*>& points) : pointsApplication(points) {
     const char textures[] = {'o', '#', '$'};
     this->texture = textures[ordreTexture % NOMBRE_DE_TEXTURE];
     ordreTexture++;
-
-    std::for_each(points.begin(), points.end(), [this](Point* p) {this->ajouterPoint(p);});
+    id = Point::getProchainId();
+    Point::incrementProchainId();
+    std::for_each(points.begin(), points.end(), [this](Point* p) {this->ajouterPoint(p->obtenirId());});
 }
 
 Nuage::~Nuage() {
-    for (Point* p : pointsDansNuage) {
-        delete p;
-    }
     pointsDansNuage.clear();
+    nuagesDansNuage.clear();
+}
+
+std::vector<Point*> Nuage::obtenirPoints() {
+    std::vector<Point*> res = std::vector<Point*>();
+    std::for_each(pointsDansNuage.begin(), pointsDansNuage.end(), [this, &res](int id) {
+        auto it = std::find_if(pointsApplication.begin(), pointsApplication.end(),
+                               [id](Point* &p) { return p->obtenirId() == id; });
+        if (it != pointsApplication.end()) {
+            res.push_back(*it);
+        }
+    });
+    return res;
 }
 
 std::string Nuage::afficher() const {
     std::ostringstream oss;
     std::string textures = "";
 
-    for (Point* p : pointsDansNuage) {
-        textures += p->obtenirTexture();
+    for (int i : pointsDansNuage) {
+        auto it = std::find_if(pointsApplication.begin(), pointsApplication.end(),
+                              [i](Point* p) { return p->obtenirId() == i; });
+        if (it != pointsApplication.end()) {
+            textures += (*it)->obtenirTexture();
+        }
     }
 
-    oss << "Nuage '" << texture << "' contient les points: ";
+    
+
+    oss << id << ": Nuage '" << texture << "' contient les points: ";
     for (size_t i = 0; i < pointsDansNuage.size(); ++i) {
-        oss << pointsDansNuage[i]->obtenirId();
-        if (i < pointsDansNuage.size() - 1) {
+        oss << pointsDansNuage[i];
+        if (i < pointsDansNuage.size() - 1 || !nuagesDansNuage.empty()) {
+            oss << ", ";
+        }
+    }
+    for (size_t i = 0; i < nuagesDansNuage.size(); ++i) {
+        oss << nuagesDansNuage[i];
+        if (i < nuagesDansNuage.size() - 1) {
             oss << ", ";
         }
     }
@@ -82,4 +107,28 @@ std::string Nuage::filtrerTextures(std::string textures) const {
         }
     }
     return t;
+}
+
+int Nuage::obtenirId() {
+    return id;
+}
+
+void Nuage::ajouterNuage(int id) {
+    nuagesDansNuage.push_back(id);
+    /*
+    
+    for (int i : n->pointsDansNuage) {
+        switch(texture) {
+        case '#':
+            p = new TextureDiese(p);
+            break;
+        case '$':
+            p = new TextureDollar(p);
+            break;
+        case 'o':
+            p = new TextureO(p);
+            break;
+        }   
+    }
+    */
 }

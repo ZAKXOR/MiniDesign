@@ -7,19 +7,23 @@
 
 class Nuage {
     private:
-    std::vector<Point*> pointsDansNuage = std::vector<Point*>();
+    std::vector<int> nuagesDansNuage = std::vector<int>();
+    std::vector<int> pointsDansNuage = std::vector<int>();
+    std::vector<Point*>& pointsApplication;
+
     char texture;
+    int id;
     static int ordreTexture;
     public:
     Nuage(std::vector<Point*>& points);
     ~Nuage();
     const int NOMBRE_DE_TEXTURE = 3;
-
-    void ajouterPoint(Point* p); // TODO: DECORER LE POINT DEPENDANT DE LA TEXTURE DU NUAGE
-    std::vector<Point*> obtenirPoints() const;
+    void ajouterPoint(int id);
+    void ajouterNuage(int id);
+    std::vector<int> obtenirIdPoints() const;
+    std::vector<Point*> obtenirPoints();
     void supprimerPoint(int id);
     std::string afficher() const;
     std::string filtrerTextures(std::string textures) const;
-
-    
+    int obtenirId();
 };

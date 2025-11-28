@@ -13,7 +13,7 @@ class Point {
     int x;
     int y;
     int id;
-    
+    bool disabled;
     public:
     Point(int x, int y, bool skipID = false);
     ~Point();
@@ -23,5 +23,7 @@ class Point {
     virtual void modifierXY(int newX, int newY);
     virtual std::string obtenirTexture() const;
     virtual std::string afficher() const;
+    static int getProchainId();
+    static void incrementProchainId();
     void decrementerId();
 };

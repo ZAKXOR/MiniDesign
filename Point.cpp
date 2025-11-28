@@ -38,3 +38,11 @@ std::string Point::obtenirTexture() const {
 std::string Point::afficher() const {
     return std::to_string(id) + ": (" + std::to_string(x) + "," + std::to_string(y) + ")  textures: " + obtenirTexture();
 }
+
+int Point::getProchainId() {
+    return prochainId;
+}
+
+void Point::incrementProchainId() {
+    prochainId++;
+}

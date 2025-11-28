@@ -1,10 +1,15 @@
 #include "Application.h"
 #include "StrategieAffichage.h"
 #include "StrategieConstruction.h"
+#include "CommandAbs.h"
+#include "DeplacerCmd.h"
+#include "SupprimerCmd.h"
+#include "Invoker.h"
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -27,7 +32,8 @@ vector<Point*> creerPoints(const string& args) {
 
 int main(int argc, char* argv[]) {
     Application app;
-    
+    Invoker invoker;
+
     string args;
     if (argc > 1) {
         ostringstream oss;
@@ -50,9 +56,11 @@ int main(int argc, char* argv[]) {
              << "a  - Afficher les points et les nuages\n"
              << "o1 - Afficher l'orthèse avec les textures des points\n"
              << "o2 - Afficher l'orthèse avec les IDs des points\n"
-             << "f  - Fusionner des points dans un nuage (et appliquer texture)\n"
+             << "f  - Fusionner des points/nuages dans un nouveau nuage (ex: f 0 2 5)\n"
              << "d  - Deplacer un point (ID)\n"
              << "s  - Supprimer un point (ID)\n"
+             << "u  - Annuler la derniere commande (undo)\n"
+             << "r  - Reappliquer la derniere commande annulee (redo)\n"
              << "c1 - Créer les surfaces selon l'ordre des IDs\n"
              << "c2 - Créer les surfaces selon la distance minimale\n"
              << "q  - Quitter\n> ";
@@ -92,14 +100,24 @@ int main(int argc, char* argv[]) {
             int x, y;
             cin >> x >> y;
             cin.ignore();
-            app.deplacerPoint(id, x, y);
+            CommandAbs* deplacerCmd = new DeplacerCmd(app, id, x, y);
+            invoker.execute(deplacerCmd);
+            // app.deplacerPoint(id, x, y);
+        }
+        else if (cmd == "u") {
+            invoker.undo();
+        }
+        else if (cmd == "r") {
+            invoker.redo();
         }
         else if (cmd == "s") {
             cout << "Entrez l'ID du point à supprimer: ";
             int id;
             cin >> id;
             cin.ignore();
-            app.supprimerPoint(id);
+            CommandAbs* supprimerCmd = new SupprimerCmd(app, id);
+            invoker.execute(supprimerCmd);
+            // app.supprimerPoint(id);
         }
         else if (cmd == "c1") {
             app.modifierStrategieConstruction(new StrategieConstruction1());

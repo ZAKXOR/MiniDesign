@@ -27,4 +27,5 @@ class Application {
         void ajouterPoint(Point* point);
         void ajouterPoint(std::vector<Point*> pts);
         void tracerLigne(vector<vector<char>>& grille, int x0, int y0, int x1, int y1);
+        Point* obtenirPoint(int id);
 };

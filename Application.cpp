@@ -33,24 +33,22 @@ void Application::deplacerPoint(int id, int newX, int newY) {
 
 void Application::fusionnerPoints(vector<int> ids) {
     vector<Point*> pointsAFusionner;
+    vector<Nuage*> nuagesAFusionner;
     for (int id : ids) {
-        auto it = find_if(points.begin(), points.end(),
-                          [id](Point* p) { return p->obtenirId() == id; });
+        auto it = find_if(points.begin(), points.end(), [id](Point* p) { return p->obtenirId() == id; });
         if (it != points.end()) {
             pointsAFusionner.push_back(*it);
         }
+        auto itN = find_if(nuages.begin(), nuages.end(), [id] (Nuage* n) {return n->obtenirId() == id; });
+        if (itN != nuages.end()) {
+            nuagesAFusionner.push_back(*itN);
+            }
     }
     
-    if (!pointsAFusionner.empty()) {
+    if (!(pointsAFusionner.empty() && nuagesAFusionner.empty())) {
         Nuage* nouveauNuage = new Nuage(pointsAFusionner);
         nuages.push_back(nouveauNuage);
-        for (Point* p : pointsAFusionner) {
-            auto it = std::find_if(points.begin(), points.end(), [p](Point* pt) { return pt->obtenirId() == p->obtenirId(); });       
-            points.erase(it);
-        }
-        for (Point* p : nouveauNuage->obtenirPoints()) {
-            ajouterPoint(p);
-        }
+        for_each(nuagesAFusionner.begin(), nuagesAFusionner.end(), [nouveauNuage](Nuage* n){ nouveauNuage->ajouterNuage(n->obtenirId()); });
     }
 }
 
@@ -134,6 +132,15 @@ void Application::afficherGrille() {
             cout << grille[y][x];
         }
         cout << '\n';
+    }
+}
+
+
+Point* Application::obtenirPoint(int id){
+    for (Point* p : points) {
+        if (p->obtenirId() == id) {
+            return p;
+        }
     }
 }
 
