@@ -22,6 +22,28 @@ void Application::supprimerPoint(int id) {
     delete pointSupprimer;
 }
 
+
+Point* Application::retirerPoint(int id) {
+    Point* pointRetire = nullptr;
+    auto it = std::find_if(points.begin(), points.end(),
+                          [id](Point* p) { return p->obtenirId() == id; });
+    if (it != points.end()) {
+        pointRetire = *it;
+        points.erase(it);
+    }
+    
+
+    for (Nuage* n : nuages) {
+        n->supprimerPoint(id);
+    }
+
+    return pointRetire;
+}
+
+vector<Nuage*>& Application::obtenirNuages() {
+    return nuages;
+}
+
 void Application::deplacerPoint(int id, int newX, int newY) {
     for (Point* p : points) {
         if (p->obtenirId() == id) {

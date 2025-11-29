@@ -23,8 +23,11 @@ void Nuage::ajouterPoint(int id) {
             *it = new TextureO(*it);
             break;
     }
-    pointsDansNuage.push_back((*it)->obtenirId());
-    
+    pointsDansNuage.push_back((*it)->obtenirId());  
+}
+
+void Nuage::ajouterPointSansTexture(int id) {
+    pointsDansNuage.push_back(id);
 }
 
 std::vector<int> Nuage::obtenirIdPoints() const {

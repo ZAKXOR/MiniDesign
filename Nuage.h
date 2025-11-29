@@ -27,4 +27,5 @@ class Nuage {
     std::string afficher() const;
     std::string filtrerTextures(std::string textures) const;
     int obtenirId();
+    void ajouterPointSansTexture(int id);
 };

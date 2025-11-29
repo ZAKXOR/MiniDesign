@@ -1,6 +1,7 @@
 #pragma once
 #include "CommandAbs.h"
 #include "Application.h"
+#include <vector>
 
 
 using namespace std;
@@ -16,5 +17,6 @@ class SupprimerCmd : public CommandAbs {
         Application& app;
         Point* point;
         int id;
+        vector<int> nuagesContenantPoint;
 };
 
