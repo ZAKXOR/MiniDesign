@@ -24,6 +24,7 @@ void Nuage::ajouterPoint(int id) {
             break;
     }
     pointsDansNuage.push_back((*it)->obtenirId());
+    
 }
 
 std::vector<int> Nuage::obtenirIdPoints() const {
@@ -35,7 +36,7 @@ void Nuage::supprimerPoint(int id) {
         std::remove_if(
             pointsDansNuage.begin(),
             pointsDansNuage.end(),
-            [id](Point* p) { return p->obtenirId() == id; }
+            [id](int pointId) { return pointId == id; }
         ),
         pointsDansNuage.end()
     );
@@ -48,6 +49,19 @@ Nuage::Nuage(std::vector<Point*>& points) : pointsApplication(points) {
     id = Point::getProchainId();
     Point::incrementProchainId();
     std::for_each(points.begin(), points.end(), [this](Point* p) {this->ajouterPoint(p->obtenirId());});
+}
+
+Nuage::Nuage(std::vector<Point*>& points, const std::vector<int>& idsAAjouter) 
+    : pointsApplication(points) {
+    const char textures[] = {'o', '#', '$'};
+    this->texture = textures[ordreTexture % NOMBRE_DE_TEXTURE];
+    ordreTexture++;
+    id = Point::getProchainId();
+    Point::incrementProchainId();
+    
+    for (int pointId : idsAAjouter) {
+        this->ajouterPoint(pointId);
+    }
 }
 
 Nuage::~Nuage() {

@@ -1,6 +1,6 @@
 #include "DecorateurPoint.h"
 
-DecorateurPoint::DecorateurPoint(Point* p): Point(p->obtenirX(), p->obtenirY(), true), point(p) { point = p; }
+DecorateurPoint::DecorateurPoint(Point* p): Point(p->obtenirX(), p->obtenirY(), true), point(p) {}
 
 DecorateurPoint::~DecorateurPoint() {
     delete point;

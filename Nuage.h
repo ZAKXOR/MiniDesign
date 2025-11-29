@@ -15,7 +15,7 @@ class Nuage {
     int id;
     static int ordreTexture;
     public:
-    Nuage(std::vector<Point*>& points);
+    Nuage(std::vector<Point*>& points, const std::vector<int>& idsAAjouter);
     ~Nuage();
     const int NOMBRE_DE_TEXTURE = 3;
     void ajouterPoint(int id);
