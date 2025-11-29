@@ -10,12 +10,13 @@ class Nuage {
     std::vector<int> nuagesDansNuage = std::vector<int>();
     std::vector<int> pointsDansNuage = std::vector<int>();
     std::vector<Point*>& pointsApplication;
+    std::vector<Nuage*>& nuagesApplication;
 
     char texture;
     int id;
     static int ordreTexture;
     public:
-    Nuage(std::vector<Point*>& points, const std::vector<int>& idsAAjouter);
+    Nuage(std::vector<Point*>& points, std::vector<Nuage*>&, const std::vector<int>& idsAAjouter);
     ~Nuage();
     const int NOMBRE_DE_TEXTURE = 3;
     void ajouterPoint(int id);

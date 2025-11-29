@@ -31,30 +31,9 @@ void Application::deplacerPoint(int id, int newX, int newY) {
     }
 }
 
-// void Application::fusionnerPoints(vector<int> ids) {
-//     vector<Point*> pointsAFusionner;
-//     vector<Nuage*> nuagesAFusionner;
-//     for (int id : ids) {
-//         auto it = find_if(points.begin(), points.end(), [id](Point* p) { return p->obtenirId() == id; });
-//         if (it != points.end()) {
-//             pointsAFusionner.push_back(*it);
-//         }
-//         auto itN = find_if(nuages.begin(), nuages.end(), [id] (Nuage* n) {return n->obtenirId() == id; });
-//         if (itN != nuages.end()) {
-//             nuagesAFusionner.push_back(*itN);
-//             }
-//     }
-    
-//     if (!(pointsAFusionner.empty() && nuagesAFusionner.empty())) {
-//         Nuage* nouveauNuage = new Nuage(pointsAFusionner);
-//         nuages.push_back(nouveauNuage);
-//         for_each(nuagesAFusionner.begin(), nuagesAFusionner.end(), [nouveauNuage](Nuage* n){ nouveauNuage->ajouterNuage(n->obtenirId()); });
-//     }
-// }
-
 void Application::fusionnerPoints(vector<int> ids) {
     vector<int> idsPoints;
-    vector<Nuage*> nuagesAFusionner;
+    vector<int> idsNuages;
     
     for (int id : ids) {
         auto it = find_if(points.begin(), points.end(), 
@@ -66,22 +45,19 @@ void Application::fusionnerPoints(vector<int> ids) {
         auto itN = find_if(nuages.begin(), nuages.end(), 
                           [id](Nuage* n) { return n->obtenirId() == id; });
         if (itN != nuages.end()) {
-            nuagesAFusionner.push_back(*itN);
+            idsNuages.push_back(id);
         }
     }
     
-    if (!(idsPoints.empty() && nuagesAFusionner.empty())) {
-        Nuage* nouveauNuage = new Nuage(points, idsPoints);
+    if (!(idsPoints.empty() && idsNuages.empty())) {
+        Nuage* nouveauNuage = new Nuage(points, nuages, idsPoints);
         nuages.push_back(nouveauNuage);
-        
-        for_each(nuagesAFusionner.begin(), nuagesAFusionner.end(), 
-                [nouveauNuage](Nuage* n){ 
-                    nouveauNuage->ajouterNuage(n->obtenirId()); 
-                });
+
+        for (int idNuage : idsNuages) {
+            nouveauNuage->ajouterNuage(idNuage);
+        }
     }
 }
-
-
 
 
 void Application::ajouterPoint(Point* point) {
