@@ -51,8 +51,8 @@ Nuage::Nuage(std::vector<Point*>& points, std::vector<Nuage*>& nuages, const std
     const char textures[] = {'o', '#', '$'};
     this->texture = textures[ordreTexture % NOMBRE_DE_TEXTURE];
     ordreTexture++;
-    id = Point::getProchainId();
-    Point::incrementProchainId();
+    id = Point::obtenirProchainId();
+    Point::incrementerProchainId();
     
     for (int pointId : idsAAjouter) {
         this->ajouterPoint(pointId);
@@ -143,4 +143,16 @@ void Nuage::ajouterNuage(int id) {
             break;
         }
     }
+}
+
+std::vector<Point*> Nuage::obtenirToutLesPoints() {
+    std::vector<Point*> ret = obtenirPoints();
+    for (int id : nuagesDansNuage) {
+        auto it = find_if(nuagesApplication.begin(), nuagesApplication.end(), [id](Nuage* n){ return id == n->id; });
+        std::vector<Point*> n_points = (*it)->obtenirPoints();
+        for (Point* p : n_points) {
+            ret.push_back(p);
+        }
+    }
+    return ret;
 }

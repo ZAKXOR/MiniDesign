@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     }
     
     vector<Point*> points = creerPoints(args);
-    app.ajouterPoint(points);
+    app.ajouterPoints(points);
     
     app.modifierStrategieAffichage(new StrategieAffichage1);
 

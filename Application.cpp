@@ -87,7 +87,7 @@ void Application::ajouterPoint(Point* point) {
     std::sort(points.begin(), points.end(), [](const Point* a, const Point* b) { return a->obtenirId() < b->obtenirId();});
 }
 
-void Application::ajouterPoint(std::vector<Point*> pts) {
+void Application::ajouterPoints(std::vector<Point*> pts) {
     for (Point* point : pts) {
         points.push_back(point);
     }
@@ -147,7 +147,7 @@ void Application::afficherGrille() {
         
         for (Nuage* nuage : nuages) {      
             if (strategieConstruction) {
-                auto aretes = strategieConstruction->construireNuage(nuage->obtenirPoints());
+                auto aretes = strategieConstruction->construireNuage(nuage->obtenirToutLesPoints());
                 for (const auto& arete : aretes) {
                     tracerLigne(grille, 
                                arete.first->obtenirX(), arete.first->obtenirY(),
