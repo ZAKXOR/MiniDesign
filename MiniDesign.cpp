@@ -102,7 +102,6 @@ int main(int argc, char* argv[]) {
             cin.ignore();
             CommandAbs* deplacerCmd = new DeplacerCmd(app, id, x, y);
             invoker.execute(deplacerCmd);
-            // app.deplacerPoint(id, x, y);
         }
         else if (cmd == "u") {
             invoker.undo();
@@ -117,7 +116,6 @@ int main(int argc, char* argv[]) {
             cin.ignore();
             CommandAbs* supprimerCmd = new SupprimerCmd(app, id);
             invoker.execute(supprimerCmd);
-            // app.supprimerPoint(id);
         }
         else if (cmd == "c1") {
             app.modifierStrategieConstruction(new StrategieConstruction1());
@@ -133,3 +131,4 @@ int main(int argc, char* argv[]) {
     }
     return 0;
 }
+

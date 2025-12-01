@@ -16,7 +16,7 @@ class Point {
 
     public:
     Point(int x, int y, bool skipID = false);
-    ~Point();
+    virtual ~Point();
     virtual int obtenirId() const;
     virtual int obtenirX() const;
     virtual int obtenirY() const;
